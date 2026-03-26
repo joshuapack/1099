@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1099 XML Generator | NEC & MISC</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>1099 Form XML Generator</h1>
+            <p class="subtitle">Quickly generate IRS e-file compliant XML files for 2025</p>
+        </header>
+
+        <div class="card">
+            <div class="form-selector">
+                <button id="tabNec" class="active" onclick="switchForm('NEC')">1099-NEC (Nonemployee Compensation)</button>
+                <button id="tabMisc" onclick="switchForm('MISC')">1099-MISC (Miscellaneous Information)</button>
+            </div>
+
+            <form id="submissionForm">
+                <div class="section-title">Submission & Issuer Info</div>
+                <div class="grid">
+                    <div class="form-group">
+                        <label for="taxYear">Tax Year</label>
+                        <input type="number" id="taxYear" value="2025" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="submissionId">Submission ID</label>
+                        <input type="text" id="submissionId" value="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="issuerTin">Issuer TIN</label>
+                        <input type="text" id="issuerTin" placeholder="XX-XXXXXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="issuerTinType">TIN Submitted Type</label>
+                        <select id="issuerTinType">
+                            <option value="BUSINESS_TIN">Business TIN (EIN)</option>
+                            <option value="INDIVIDUAL_TIN">Individual TIN (SSN)</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="issuerName">Business Name (L1)</label>
+                        <input type="text" id="issuerName" placeholder="Business Name" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="issuerAddress">Address Line 1</label>
+                        <input type="text" id="issuerAddress" placeholder="123 Road St." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="issuerCity">City</label>
+                        <input type="text" id="issuerCity" placeholder="City" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="issuerState">State Code (e.g. FL)</label>
+                        <input type="text" id="issuerState" placeholder="FL" maxlength="2" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="issuerZip">ZIP Code</label>
+                        <input type="text" id="issuerZip" placeholder="XXXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="issuerPhone">Phone Number</label>
+                        <input type="tel" id="issuerPhone" placeholder="XXXXXXXXXX" required>
+                    </div>
+                </div>
+
+                <div class="section-title">Contact Person (Optional)</div>
+                <div class="grid">
+                    <div class="form-group">
+                        <label for="contactName">Contact Name</label>
+                        <input type="text" id="contactName" placeholder="Contact Person">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactEmail">Contact Email</label>
+                        <input type="email" id="contactEmail" placeholder="email@example.com">
+                    </div>
+                </div>
+
+                <div class="section-title">Recipient Info</div>
+                <div class="grid">
+                    <div class="form-group">
+                        <label for="rcpntTin">Recipient TIN</label>
+                        <input type="text" id="rcpntTin" placeholder="XX-XXXXXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rcpntTinType">Recipient TIN Type</label>
+                        <select id="rcpntTinType">
+                            <option value="BUSINESS_TIN">Business TIN (EIN)</option>
+                            <option value="INDIVIDUAL_TIN">Individual TIN (SSN)</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="rcpntName">Recipient Name / Business Name (L1)</label>
+                        <input type="text" id="rcpntName" placeholder="Full Name or Business Name" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="rcpntAddress">Address Line 1</label>
+                        <input type="text" id="rcpntAddress" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rcpntCity">City</label>
+                        <input type="text" id="rcpntCity" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rcpntState">State Code (e.g. FL)</label>
+                        <input type="text" id="rcpntState" maxlength="2" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rcpntZip">ZIP Code</label>
+                        <input type="text" id="rcpntZip" required>
+                    </div>
+                </div>
+
+                <div class="section-title">Indicators & Status</div>
+                <div class="grid">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="voidInd">
+                        <label for="voidInd">VOID</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="correctedInd">
+                        <label for="correctedInd">CORRECTED</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="secondTinNotice">
+                        <label for="secondTinNotice">2nd TIN Not.</label>
+                    </div>
+                </div>
+
+                <!-- 1099-NEC FIELDS -->
+                <div id="necForm" class="animate-in">
+                    <div class="section-title">1099-NEC Specific Amounts</div>
+                    <div class="box-fields">
+                        <div class="box-input">
+                            <span class="box-number">Box 1</span>
+                            <label for="nec1">Nonemployee comp</label>
+                            <input type="number" step="0.01" id="nec1" value="0.00" class="full-width">
+                        </div>
+                        <div class="checkbox-group box-input" style="flex-direction: column; align-items: flex-start;">
+                            <span class="box-number">Box 2</span>
+                            <label for="nec2" style="font-size: 0.75rem;">Direct sales totals $5k+</label>
+                            <input type="checkbox" id="nec2">
+                        </div>
+                        <div class="box-input">
+                            <span class="box-number">Box 3</span>
+                            <label for="nec3">Excess golden parachute</label>
+                            <input type="number" step="0.01" id="nec3" value="0.00" class="full-width">
+                        </div>
+                        <div class="box-input">
+                            <span class="box-number">Box 4</span>
+                            <label for="nec4">Federal income tax withheld</label>
+                            <input type="number" step="0.01" id="nec4" value="0.00" class="full-width">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1099-MISC FIELDS -->
+                <div id="miscForm" class="hidden animate-in">
+                    <div class="section-title">1099-MISC Specific Amounts</div>
+                    <div class="box-fields">
+                        <div class="box-input">
+                            <span class="box-number">Box 1</span>
+                            <label for="misc1">Rents</label>
+                            <input type="number" step="0.01" id="misc1" value="0.00">
+                        </div>
+                        <div class="box-input">
+                            <span class="box-number">Box 2</span>
+                            <label for="misc2">Royalties</label>
+                            <input type="number" step="0.01" id="misc2" value="0.00">
+                        </div>
+                        <div class="box-input">
+                            <span class="box-number">Box 3</span>
+                            <label for="misc3">Other income</label>
+                            <input type="number" step="0.01" id="misc3" value="0.00">
+                        </div>
+                        <div class="box-input">
+                            <span class="box-number">Box 4</span>
+                            <label for="misc4">Federal tax withheld</label>
+                            <input type="number" step="0.01" id="misc4" value="0.00">
+                        </div>
+                        <div class="box-input">
+                            <span class="box-number">Box 5</span>
+                            <label for="misc5">Fishing boat proceeds</label>
+                            <input type="number" step="0.01" id="misc5" value="0.00">
+                        </div>
+                        <div class="box-input">
+                            <span class="box-number">Box 6</span>
+                            <label for="misc6">Medical/Health care</label>
+                            <input type="number" step="0.01" id="misc6" value="0.00">
+                        </div>
+                        <div class="checkbox-group box-input" style="flex-direction: column; align-items: flex-start;">
+                            <span class="box-number">Box 7</span>
+                            <label for="misc7" style="font-size: 0.75rem;">Direct sales totals $5k+</label>
+                            <input type="checkbox" id="misc7">
+                        </div>
+                        <div class="box-input">
+                            <span class="box-number">Box 8</span>
+                            <label for="misc8">Substitute payments</label>
+                            <input type="number" step="0.01" id="misc8" value="0.00">
+                        </div>
+                        <div class="box-input">
+                            <span class="box-number">Box 9</span>
+                            <label for="misc9">Crop insurance proceeds</label>
+                            <input type="number" step="0.01" id="misc9" value="0.00">
+                        </div>
+                        <div class="box-input">
+                            <span class="box-number">Box 10</span>
+                            <label for="misc10">Attorney gross proceeds</label>
+                            <input type="number" step="0.01" id="misc10" value="0.00">
+                        </div>
+                        <div class="box-input">
+                            <span class="box-number">Box 11</span>
+                            <label for="misc11">Fish purchased for resale</label>
+                            <input type="number" step="0.01" id="misc11" value="0.00">
+                        </div>
+                        <div class="box-input">
+                            <span class="box-number">Box 12</span>
+                            <label for="misc12">Section 409A deferrals</label>
+                            <input type="number" step="0.01" id="misc12" value="0.00">
+                        </div>
+                        <div class="checkbox-group box-input" style="flex-direction: column; align-items: flex-start;">
+                            <span class="box-number">Box 13</span>
+                            <label for="misc13" style="font-size: 0.75rem;">FATCA requirement</label>
+                            <input type="checkbox" id="misc13">
+                        </div>
+                        <div class="box-input">
+                            <span class="box-number">Box 15</span>
+                            <label for="misc15">Nonqualified compensation</label>
+                            <input type="number" step="0.01" id="misc15" value="0.00">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button type="button" class="btn-download" onclick="generateXML()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Download XML
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
