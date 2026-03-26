@@ -168,10 +168,74 @@ input[type="checkbox"] {
     display: block;
 }
 
+.section-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 24px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.section-header-row .section-title {
+    margin: 0;
+    border: none;
+}
+
+.btn-remove {
+    background: #fee2e2;
+    color: #ef4444;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-remove:hover {
+    background: #fecaca;
+}
+
+.btn-secondary {
+    background: #f1f5f9;
+    color: #475569;
+    padding: 12px 24px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-right: 15px;
+    font-family: inherit;
+}
+
+.btn-secondary:hover {
+    background: #e2e8f0;
+}
+
+.indicator-grid {
+    display: flex;
+    gap: 30px;
+    margin: 15px 0;
+    background: #f8fafc;
+    padding: 10px 15px;
+    border-radius: 8px;
+}
+
+.amount-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #64748b;
+    margin: 15px 0 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
 .actions {
     margin-top: 40px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
 }
 
 .btn-download {
